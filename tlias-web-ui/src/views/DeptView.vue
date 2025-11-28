@@ -74,7 +74,7 @@
 
 <script setup>
 import { ref, onMounted, reactive } from 'vue';
-import axios from 'axios';
+import request from '@/utils/request';
 import { ElMessage, ElMessageBox } from 'element-plus'; 
 
 // --- 原有的 Script 逻辑保持不变 ---
@@ -90,7 +90,7 @@ const deptForm = reactive({
 
 // 查询列表
 const getDeptList = async () => {
-    const response = await axios.get('http://localhost:8080/depts');
+    const response = await request.get('http://localhost:8080/depts');
     if (response.data.code === 1) deptList.value = response.data.data;
 }
 
@@ -106,7 +106,7 @@ const openAddDialog = () => {
 const handleEdit = async (id) => {
     dialogTitle.value = '修改部门';
     dialogVisible.value = true;
-    const response = await axios.get(`http://localhost:8080/depts/${id}`);
+    const response = await request.get(`http://localhost:8080/depts/${id}`);
     if (response.data.code === 1) {
         const data = response.data.data;
         deptForm.id = data.id;
@@ -120,9 +120,9 @@ const handleSubmit = async () => {
 
     let response;
     if (deptForm.id) {
-        response = await axios.put('http://localhost:8080/depts', deptForm);
+        response = await request.put('http://localhost:8080/depts', deptForm);
     } else {
-        response = await axios.post('http://localhost:8080/depts', deptForm);
+        response = await request.post('http://localhost:8080/depts', deptForm);
     }
 
     if (response.data.code === 1) {
