@@ -1,5 +1,6 @@
 package com.eklps.tlias.controller;
 
+import com.eklps.tlias.anno.Log;
 import com.eklps.tlias.pojo.Emp;
 import com.eklps.tlias.pojo.PageBean;
 import com.eklps.tlias.pojo.Result;
@@ -31,13 +32,13 @@ public class EmpController {
         PageBean pageBean=empService.page(page,pageSize,name,gender,begin,end);
         return Result.success(pageBean);
     }
-
+    @Log
     @DeleteMapping("/{ids}")
     public Result delete(@PathVariable List<Integer> ids){
         empService.delete(ids);
         return Result.success();
     }
-
+    @Log
     @PostMapping
     public Result save(@RequestBody Emp emp){
         log.info("新增员工:{}",emp.getName());
@@ -52,7 +53,7 @@ public class EmpController {
         Emp emp = empService.getById(id);
         return Result.success(emp);
     }
-
+    @Log
     @PutMapping
     public Result update(@RequestBody Emp emp){
         log.info("更新员工信息: {}", emp);

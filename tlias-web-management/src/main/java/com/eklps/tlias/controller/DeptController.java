@@ -1,5 +1,6 @@
 package com.eklps.tlias.controller;
 
+import com.eklps.tlias.anno.Log;
 import com.eklps.tlias.pojo.Dept;
 import com.eklps.tlias.pojo.Result;
 import com.eklps.tlias.service.DeptService;
@@ -24,14 +25,14 @@ public class DeptController {
         List<Dept> deptList=deptService.list();
         return Result.success(deptList);
     }
-
+    @Log
     @DeleteMapping("/{id}")
     public Result deleteById(@PathVariable Integer id){
         log.info("根据id删除部门：",id);
         deptService.deleteById(id);
         return Result.success();
     }
-
+    @Log
     @PostMapping
     public Result add(@RequestBody Dept dept){
         log.info("正在添加dept:{}",dept.getName());
@@ -45,7 +46,7 @@ public class DeptController {
         Dept d=deptService.getById(id);
         return Result.success(d);
     }
-
+    @Log
     @PutMapping()
     public Result update(@RequestBody Dept dept){
         log.info("正在修改dept{}数据",dept.getName());
