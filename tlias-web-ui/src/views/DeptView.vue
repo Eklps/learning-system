@@ -135,16 +135,35 @@ const handleSubmit = async () => {
 }
 
 // 删除
+// 删除部门
 const handleDelete = (row) => {
-    ElMessageBox.confirm(`确定删除部门 [${row.name}] 吗?`, '警告', { type: 'warning' })
+  ElMessageBox.confirm(
+    '确认删除该部门吗?', // 提示内容
+    '警告', // 标题
+    {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }
+  )
     .then(async () => {
-        const response = await axios.delete(`http://localhost:8080/depts/${row.id}`);
-        if (response.data.code === 1) {
-            ElMessage.success('删除成功');
-            getDeptList();
-        }
+      // 1. 发送删除请求 (使用封装好的 request)
+      // 注意：这里使用的是反引号 ` 而不是单引号 '
+      const response = await request.delete(`/depts/${row.id}`);
+      
+      // 2. 判断结果
+      if (response.data.code === 1) {
+        ElMessage.success('删除成功');
+        // 3. 刷新列表
+        getDeptList();
+      } else {
+        ElMessage.error(response.data.message || '删除失败');
+      }
+    })
+    .catch(() => {
+      ElMessage.info('已取消删除');
     });
-}
+};
 
 // 关闭清理
 const handleClose = () => {
